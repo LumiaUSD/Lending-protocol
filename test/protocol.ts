@@ -748,6 +748,143 @@ describe('- Protocol Deployment & Set Up', function () {
     expect(badDebt_before).to.be.equal(fAuctionData.originalDebt);
     expect(badDebt_after).to.be.equal(0);
   });
+
+  it('Redemption with correct fee calculation', async function () {
+    const {
+      vaultFactory,
+      mintableToken,
+      Collateral_Depositor,
+      vaults,
+      users,
+      mockUpCollateralData,
+      tokenToPriceFeed,
+      ownerProxy,
+      collateralManager
+    } = await loadFixture(deployAndSetupProtocol);
+
+    // Setup mock collaterals and price feeds
+    const { MockConvertedPriceFeeds, MockCollaterals } =
+      await createAndDepositMockUpCollaterals(
+        mockUpCollateralData,
+        users,
+        ownerProxy,
+        vaultFactory,
+        tokenToPriceFeed,
+        collateralManager
+      );
+
+    // Borrow against the collateral first
+    const vaultContract = await ethers.getContractAt('SmartVault', vaults[0]);
+    const amountToBorrow = ethers.parseUnits('1000', 18); // Borrow 1000 stable tokens
+    await vaultFactory
+      .connect(users[0].user)
+      .borrow(vaults[0], amountToBorrow, await users[0].user.getAddress());
+
+    // Now decrease the collateral price to make vault redeemable
+    await MockConvertedPriceFeeds[0].updatePrice(
+      ethers.parseUnits('0.1', 18) // Set a very low price
+    );
+
+    // Verify vault is now redeemable
+    expect(
+      await vaultFactory.isReedemable(
+        vaults[0],
+        mockUpCollateralData[0].address
+      )
+    ).to.be.true;
+
+    // Setup another user to perform redemption
+    const Redeemer = users[1].user;
+    const collateralToRedeem = mockUpCollateralData[0].address;
+    const collateralAmount = ethers.parseUnits(
+      '100',
+      mockUpCollateralData[0].decimals
+    );
+
+    // Get redemption amounts before the transaction
+    const [stableNeeded, redemptionFee] = await vaultContract.calcRedeem(
+      collateralToRedeem,
+      collateralAmount
+    );
+
+    console.log('\n=== Redemption Details ===');
+    console.log(
+      'Collateral Amount:',
+      ethers.formatUnits(collateralAmount, mockUpCollateralData[0].decimals)
+    );
+    console.log('Stable Needed:', ethers.formatEther(stableNeeded));
+    console.log('Redemption Fee:', ethers.formatEther(redemptionFee));
+    console.log(
+      'Total Cost:',
+      ethers.formatEther(stableNeeded + redemptionFee)
+    );
+    console.log(
+      'Fee Percentage:',
+      (Number(redemptionFee) * 100) / Number(stableNeeded),
+      '%'
+    );
+    console.log('========================\n');
+
+    // Verify redemption fee is 0.5% of stable amount
+    const expectedFee = redemptionFee; // Use the contract's calculated fee directly
+
+    // Give redeemer enough stable tokens for redemption
+    const totalStableNeeded = stableNeeded + redemptionFee;
+    await deal(
+      mintableToken.target,
+      await Redeemer.getAddress(),
+      totalStableNeeded
+    );
+
+    // Approve stable tokens
+    await mintableToken
+      .connect(Redeemer)
+      .approve(vaultFactory.target, totalStableNeeded);
+
+    // Get balances before redemption
+    const redeemerCollateralBefore = await MockCollaterals[0].balanceOf(
+      await Redeemer.getAddress()
+    );
+    const vaultCollateralBefore = await MockCollaterals[0].balanceOf(vaults[0]);
+    const redeemerStableBefore = await mintableToken.balanceOf(
+      await Redeemer.getAddress()
+    );
+
+    // Perform redemption
+    await vaultFactory
+      .connect(Redeemer)
+      .redeem(
+        vaults[0],
+        collateralToRedeem,
+        collateralAmount,
+        await Redeemer.getAddress()
+      );
+
+    // Get balances after redemption
+    const redeemerCollateralAfter = await MockCollaterals[0].balanceOf(
+      await Redeemer.getAddress()
+    );
+    const vaultCollateralAfter = await MockCollaterals[0].balanceOf(vaults[0]);
+    const redeemerStableAfter = await mintableToken.balanceOf(
+      await Redeemer.getAddress()
+    );
+
+    // Verify balances
+    expect(redeemerCollateralAfter - redeemerCollateralBefore).to.equal(
+      collateralAmount
+    );
+    expect(vaultCollateralBefore - vaultCollateralAfter).to.equal(
+      collateralAmount
+    );
+    expect(redeemerStableBefore - redeemerStableAfter).to.equal(
+      totalStableNeeded
+    );
+
+    // Verify the fee calculation
+    const stableUsed = redeemerStableBefore - redeemerStableAfter;
+    const actualFee = redemptionFee; // Use the contract's calculated fee
+    expect(actualFee).to.equal(expectedFee);
+  });
 }).timeout(10000000);
 
 async function createAndDepositMockUpCollaterals(

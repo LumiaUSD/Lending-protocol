@@ -24,7 +24,7 @@ const deploymentConfig = {
         borrowingFeeReceiver: '0x3059afF4B95B60b37F764a287B43e4f140344917', // ! Treasury for fees generated for borrowing new debt
         redeemingFeeReceiver: '0x3059afF4B95B60b37F764a287B43e4f140344917', // ! Treasury for fees generated for redeeming a vault
         rewardFee: '0', //! Commission for third-party token rewards from vault deposits: 1 = 0.01% (eg: Mendi rewards)
-        redemptionFee: '5000000000000000' // 0.5% with 18 decimals
+        redemptionFee: '5000000000000000' // 0.5% of 100% || 0.005*10**18, being 100% = 1.000.000.000.000.000.000 || 1*10**18
       },
       redemptions: {
         redemptionKickback: '0', //! % kept to the redeemer. 0.01 equals to 1%.
