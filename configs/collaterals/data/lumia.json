@@ -8,6 +8,7 @@
     "decimals": 18,
     "collateralCap": "150000000000000000000000",
     "oracle": "0x57a73b7A4Cf18CAD77FbBB4D75651d945090272F",
-    "oracleType": "API3MarketPriceFeed"
+    "oracleType": "API3MarketPriceFeed",
+    "priceFeed": "0x57a73b7A4Cf18CAD77FbBB4D75651d945090272F"
   }
 ]
