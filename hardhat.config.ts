@@ -54,14 +54,14 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      lumiaMainnet: process.env.LUMIA_MAINNET_ETHERSCAN_API_KEY || ''
+      lumiaMainnet: 'dummyapikey'
     },
     customChains: [
       {
         network: 'lumiaMainnet',
         chainId: 994873017,
         urls: {
-          apiURL: 'https://explorer.lumia.org/api',
+          apiURL: 'https://explorer.lumia.org/api/',
           browserURL: 'https://explorer.lumia.org'
         }
       }
