@@ -1,3 +1,4 @@
+import { Constants__factory } from './../../../typechain-types/factories/contracts/utils/constants.sol/Constants__factory';
 import { ethers, network } from 'hardhat';
 
 const getDeploymentSigners = async (
@@ -37,13 +38,11 @@ const getDeploymentSigners = async (
   const owner = signers.find(
     (signer) => signer.address.toLowerCase() === ownerAddress.toLowerCase()
   );
-  const collateralManager = signers.find(
-    (signer) =>
-      signer.address.toLowerCase() === collateralManagerAddress.toLowerCase()
-  );
 
-  if (!owner || !collateralManager) {
-    throw new Error('Signer not found');
+  const collateralManager = signers[1];
+
+  if (!owner) {
+    throw new Error('Owner not equal to signer');
   }
 
   return [owner, collateralManager];
