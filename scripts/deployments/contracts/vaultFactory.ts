@@ -34,7 +34,9 @@ export const vaultFactory = async (
     tokenToPriceFeedAddress,
     vaultDeployerAddress,
     liquidationRouterAddress,
-    vaultBorrowRateAddres
+    vaultBorrowRateAddres,
+    borrowFeeRecipient,
+    redemptionFeeRecipient
   ]);
 
   // * Set debt ceiling - How much EURO3 can be minted in total
