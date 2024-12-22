@@ -276,7 +276,7 @@ describe('- Protocol Deployment & Set Up', function () {
     expect(await vaultFactory.lastVault()).to.not.be.equal(vaults[3]);
   });
 
-  it('Deposit collateral + Borrow luUSD + Withdrawn + Repay', async function () {
+  it('Deposit collateral + Borrow rwaUSD + Withdrawn + Repay', async function () {
     const {
       vaultFactory,
       Collateral_Depositor,
@@ -728,7 +728,7 @@ describe('- Protocol Deployment & Set Up', function () {
       balanceLastResortManagerEOA_before
     );
 
-    // * Repay babDebt in luUSD (After selling the collateral)
+    // * Repay babDebt in rwaUSD (After selling the collateral)
     await deal(
       mintableToken.target,
       await LastResortManagerEOA.getAddress(),

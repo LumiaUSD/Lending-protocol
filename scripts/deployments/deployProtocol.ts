@@ -193,6 +193,6 @@ const deployProtocol = async (isTestnet: boolean, logData: boolean) => {
 
 export default deployProtocol;
 
-// deployProtocol(false,true).catch((error) => {
-//   console.log(error);
-// });
+deployProtocol(false, true).catch((error) => {
+  console.log(error);
+});

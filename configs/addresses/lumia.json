@@ -12,7 +12,7 @@
   "vaultFactoryHelperV2": "",
   "tokenToPriceFeed": "",
   "priceFeed": {
-    "luUSD": ""
+    "rwaUSD": ""
   },
   "ownerProxy": "",
   "owner": "0x7d37aD1f3c4D3538359c976aBa7ef42D941d2C12",

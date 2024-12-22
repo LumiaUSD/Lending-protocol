@@ -1,13 +1,13 @@
-# Lumia Lending Protocol - luUSD
+# Lumia Lending Protocol - rwaUSD
 
 > [!NOTE]
 > This repository contains the core smart contracts for the Lumia Lending Protocol, forked from the 3A DAO Borrowing Protocol.
 
-A fork of the 3A DAO lending protocol, customized for Lumia to enable LUMIA token holders to use their tokens as collateral for borrowing luUSD stablecoin.
+A fork of the 3A DAO lending protocol, customized for Lumia to enable LUMIA token holders to use their tokens as collateral for borrowing rwaUSD stablecoin.
 
 ## Key Features
 
-- **Collateralized Lending**: Users can deposit LUMIA tokens as collateral to borrow luUSD
+- **Collateralized Lending**: Users can deposit LUMIA tokens as collateral to borrow rwaUSD
 - **Multiple Collateral Support**: While optimized for LUMIA, the protocol also can supports other collateral types like wETH
 - **Liquidation Protection**: Implements a Dutch Auction system for liquidations with a Last Resort mechanism
 - **Price Feeds**: Uses API3 Market Price Feeds for secure collateral valuation
@@ -36,13 +36,13 @@ A fork of the 3A DAO lending protocol, customized for Lumia to enable LUMIA toke
 
 #### Token Details
 
-- **Name**: Lumia USD
-- **Symbol**: luUSD
+- **Name**: rwaUSD
+- **Symbol**: rwaUSD
 
 #### Vault Parameters
 
-- **Debt Ceiling**: 100,000 luUSD
-- **Max Debt Per Window**: 100,000 luUSD
+- **Debt Ceiling**: 100,000 rwaUSD
+- **Max Debt Per Window**: 100,000 rwaUSD
 
 #### Fee Structure
 
@@ -63,7 +63,7 @@ A fork of the 3A DAO lending protocol, customized for Lumia to enable LUMIA toke
 - Minimum Collateral Ratio (MCR): 225%
 - Minimum Liquidation Ratio (MLR): 150%
 - Variable&/borrowing Fee: 0%
-- Collateral Cap: 150M tokens
+- Collateral Cap: 150K tokens
 
 ## Running Main Protocol Tests
 

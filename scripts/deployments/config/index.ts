@@ -13,12 +13,12 @@ const deploymentConfig = {
         stableIsUSD: true //! Toggle in case the stableCoin is in USD or in any other currency
       },
       mintableTokenMetadata: {
-        name: 'Lumia USD',
-        symbol: 'luUSD'
+        name: 'rwaUSD',
+        symbol: 'rwaUSD'
       },
       vaultFactory: {
-        debtCeiling: '100000', //! 100K luUSD in total can be minted
-        maxDebtPerWindow: '100000' //! 100K luUSD in total can be minted per window, which is the maximum debt ceiling set
+        debtCeiling: '100000', //! 100K rwaUSD in total can be minted
+        maxDebtPerWindow: '100000' //! 100K rwaUSD in total can be minted per window, which is the maximum debt ceiling set
       },
       fees: {
         borrowingFeeReceiver: '0x3059afF4B95B60b37F764a287B43e4f140344917', // ! Treasury for fees generated for borrowing new debt
