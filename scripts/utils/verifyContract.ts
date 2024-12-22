@@ -1,7 +1,8 @@
 import { network, run } from 'hardhat';
 
 export const verify = async (contractAddress: string, args: string[]) => {
-  if (network.name.toLowerCase() == 'hardhat' || 'redBellyTestnet') return;
+  if (network.name.toLowerCase() === 'hardhat') return;
+
   console.log('Verifying contract...');
   try {
     await run('verify:verify', {
