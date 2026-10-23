@@ -13,3 +13,8 @@ node_modules
 /coverage
 /coverage.json
 .DS_Store
+# Local signing credentials
+.env
+.env.local
+.env.*.local
+.foundry/
