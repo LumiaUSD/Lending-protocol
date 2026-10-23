@@ -1,3 +1,4 @@
+import { loadPrivateKeys } from './security/foundry-keystore.js';
 import { HardhatUserConfig } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
 import '@nomicfoundation/hardhat-ignition-ethers';
@@ -8,8 +9,6 @@ import 'hardhat-tracer';
 import 'dotenv/config';
 import 'hardhat-deal';
 
-const DEFAULT_PRIVATE_KEY =
-  '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'; // HH default private key
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -89,10 +88,7 @@ const config: HardhatUserConfig = {
     lumiaMainnet: {
       chainId: 994873017,
       url: process.env.LUMIA_MAINNET_RPC_URL || 'https://mainnet-rpc.lumia.org',
-      accounts: [
-        process.env.PRIVATE_KEY || DEFAULT_PRIVATE_KEY,
-        process.env.PRIVATE_KEY_COLLATERAL_MANAGER!
-      ],
+      accounts: loadPrivateKeys("PRIVATE_KEY", "PRIVATE_KEY_COLLATERAL_MANAGER"),
       gas: 2100000,
       gasPrice: 8000000000
     }
